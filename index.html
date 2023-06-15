@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <title>Expense Tracker</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <html>
+    <body>
+        <form onsubmit="SaveToLocalStorage(event)">
+            <label>choose Expences</label>
+            <input type="number" name="Expences" required>
+            <label>Check description</label>
+            <input type="description" name="description" required>
+            <label>Choose & Catagery</label>
+            <!-- <input type="Catagery" name="Catagery" required> -->
+            <select id="Catagery">
+            
+                <option>Movies</option>
+                <option>Ground</option>
+                <option>Hall</option>
+            </select>
+            <button>Add expenses</button>
+        </form>
+        <ul id="listOfitems"></ul>
+        
+        <script>
+            function SaveToLocalStorage(event) {
+                event.preventDefault();
+                const Expences = event.target.Expences.value;
+                const description = event.target.description.value;
+                const Catagery = event.target.Catagery.value;
+ 
+                const obj ={
+                    Expences,
+                    description,
+                    Catagery
+                }
+                localStorage.setItem(obj.description, JSON.stringify(obj));
+                showUserOnScreen(obj);
+            }
+
+            function showUserOnScreen(obj){
+                const parentElem = document.getElementById('listOfitems');
+                const childElem = document.createElement('li');
+                childElem.textContent = obj.Expences +' '+obj.description + ' ' + obj.Catagery;
+                parentElem.appendChild(childElem);
+               // parentElem.innerHTML =parentElem.innerHTML + '<li>$(obj.name) - $(obj.email) - $(obj.password)</li>'
+
+               const deletButton = document.createElement('input');
+               deletButton.type = 'button';
+               deletButton.value = 'Delet Expense';
+               deletButton.onclick = () => {
+                localStorage.removeItem(obj.description);
+                parentElem.removeChild(childElem);
+               }
+                
+                const editButton = document.createElement('input');
+               editButton.type = 'button';
+               editButton.value = 'edit expense';
+               editButton.onclick = () => {
+                localStorage.removeItem(obj.description);
+                parentElem.removeChild(childElem);
+                document.getElementById('ExpencesTag').value = obj.Expences;
+                document.getElementById('descriptionTag').value = obj.description;
+                document.getElementById('CatageryTag').value = obj.Catagery;
+               }
+               
+               childElem.appendChild(deletButton);
+               childElem.appendChild(editButton);
+               parentElem.appendChild(childElem);
+            }
+
+
+        </script>
+    </body>
+</html>
